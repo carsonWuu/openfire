@@ -1,5 +1,5 @@
-### smack:
-##### the main function:
+# smack:
+### the main function:
 ###### 
 <ol>
 	<li>login</li>
