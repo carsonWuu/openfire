@@ -1,0 +1,3 @@
+### smack:
+##### the main function:
+###### login br create br addfriend br getFriends br delete br updatePassword br and so on ...
