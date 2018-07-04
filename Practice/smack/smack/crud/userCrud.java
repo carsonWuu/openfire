@@ -1,4 +1,4 @@
-package com.test.smack.cuid;
+package com.test.smack.crud;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,23 +8,23 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.RosterListener;
-public class userCuid {
+public class userCrud {
 	XMPPConnection connection = new openConnection().getconnection();
 	String username="";//用户名
 	String psw="";//密码
 	Map attr;//用户基本信息
 	Roster roster;
 	Presence presence = new Presence(Presence.Type.available);
-	public userCuid(){
+	public userCrud(){
 		
 	}
-	public userCuid setUser(String username,String psw){//
+	public userCrud setUser(String username,String psw){//
 		this.username= username;
 		this.psw=psw;
 		
 		return this;
 	}
-	public userCuid(String username,String psw){
+	public userCrud(String username,String psw){
 		super();
 		this.username=username;
 		this.psw = psw;

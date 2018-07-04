@@ -1,4 +1,4 @@
-package com.test.smack.cuid;
+package com.test.smack.crud;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.XMPPConnection;
