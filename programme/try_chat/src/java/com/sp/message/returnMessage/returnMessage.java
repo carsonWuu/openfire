@@ -6,16 +6,30 @@ package com.sp.message.returnMessage;
  * message:返回处理结果的反馈
  */
 public class returnMessage {
-	private boolean ret;
+	private int  code;
 	private String message;
-	public returnMessage(boolean ret,String message){
-		this.ret = ret;
+	private String groupID;
+	public returnMessage(int code,String message){
+		this.code = code;
 		this.message = message;
 	}
-	public boolean getRET(){
-		return this.ret;
+	public returnMessage(int code ,String message,String id){
+		this.code = code;
+		this.message = message;
+		this.groupID = id;
+	}
+	public int  getRET(){
+		return this.code;
 	}
 	public String getMESSAGE(){
 		return this.message;
+	}
+	public String getGroupID(){
+		return this.groupID;
+	}
+	
+	@Override
+	public String toString(){
+		return "{ code : "+this.code+" , "+"msg : "+this.message+" , grp_id : "+this.groupID+" }";
 	}
 }

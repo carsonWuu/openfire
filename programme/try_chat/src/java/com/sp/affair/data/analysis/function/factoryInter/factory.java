@@ -20,15 +20,16 @@ public abstract class factory {
 	protected String msg;
 	protected String u_id;
 	
-	public abstract returnMessage doAction();
+	public abstract returnMessage doAction();//行为
 	
-	public void coutSize(){
+	public void cout(){
 		
 		int size = this.data.groupandmember.list.size();
 		System.out.println("现在成员群组数量："+size);
-		
+		System.out.println(this.data.groupandmember.tostring());
 		size = this.data.grouplist.list.size();
 		System.out.println("群组数量："+size);
+		System.out.println(this.data.grouplist.tostring());
 		
 	}
 	public static String getTime(){

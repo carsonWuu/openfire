@@ -1,6 +1,7 @@
 package com.sp.affair.data.analysis;
 
 import com.sp.affair.data.Json.Json;
+import com.sp.affair.data.analysis.function.ANALYSIS.Function;
 import com.sp.affair.data.analysis.function.createGroup.createGroup;
 import com.sp.affair.data.analysis.function.deleteGroup.deleteGroup;
 import com.sp.affair.data.analysis.function.factoryInter.factory;
@@ -18,8 +19,10 @@ import net.sf.json.JSONObject;
  */
 public class analysis {
 	public messageAnalysis message;
+	public Function function;
 	public analysis(Message message){
 		this.message = new messageAnalysis(message);
+		function  = new Function(this.message);
 	}
 	public void choose(){
 		String subject = this.message.getSubject();
@@ -28,7 +31,7 @@ public class analysis {
 			switch(subject){
 			
 			case "grp_client_kick": 
-//				doAction(subject,message);
+				function.addORdelMember();
 				break;//client:添加/踢出群员
 				
 			case "grp_server_kick": 
@@ -37,7 +40,7 @@ public class analysis {
 			
 			
 			case "grp_client_create_del":
-				addORdelGroup();
+				function.addORdelGroup();
 				break;//client:创建/解散群组
 			
 			case "grp_server_create_del_rec": 
@@ -70,18 +73,5 @@ public class analysis {
 			
 		}
 	}
-	public void addORdelGroup(){
-		JSONObject json = this.message.getBody2Json();
-		int act= this.message.getACT();
-		returnMessage retmessage = null;
-		if(act == 1){
-			factory creategroup = new createGroup(json);
-			retmessage = creategroup.doAction();
-		}
-		else if(act == 2){
-			factory deletegroup = new deleteGroup(json);
-			retmessage = deletegroup.doAction();
-		}
-		System.out.println(retmessage.getRET()+"\t"+retmessage.getMESSAGE());
-	}
+	
 }

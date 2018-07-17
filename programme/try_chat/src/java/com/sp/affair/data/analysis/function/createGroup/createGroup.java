@@ -69,7 +69,7 @@ public class createGroup extends factory{
 			}
 		}
 		if(!owner){//创建人不存在
-			ret = new returnMessage(false, this.master+"创建人不存在！");
+			ret = new returnMessage(1, this.master+"创建人不存在！");
 			return ret;
 		}
 		List<member> addUserlist = new ArrayList();
@@ -110,11 +110,11 @@ public class createGroup extends factory{
 		
 		
 		if(addUserlist.size()<2){//组员都不存在
-			ret = new returnMessage(false, "需添加已创建的组员（不包含组长）");
+			ret = new returnMessage(1, "需添加已创建的组员（不包含组长）");
 			return ret;
 		}
 		else{
-			/*
+			/*uncompleted!!!!!!!!!!!
 			 * 将群组信息分别写入表userlist、groupAndmember,和对应的数据库表中
 			 */
 			
@@ -136,8 +136,11 @@ public class createGroup extends factory{
 				}
 				temp+="\n";
 			}
-			ret =  new returnMessage(true, temp);
-			coutSize();
+			ret =  new returnMessage(0, temp,groupID);
+			
+			cout();
+			
+			
 			return ret;
 		}
 		

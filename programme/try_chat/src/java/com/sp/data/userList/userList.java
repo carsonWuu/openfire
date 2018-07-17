@@ -1,5 +1,7 @@
 package com.sp.data.userList;
 import java.util.*;
+
+import com.sp.data.groupAndmember.GroupA;
 /*用户表，结构如下。用于对用户进行crud时使用。
  * [{user1,user2,...}]
  * user:{ID}
@@ -12,6 +14,15 @@ public class userList {
 	}
 	public List<user> addUser(user u){
 		list.add(u);
+		return list;
+	}
+	public static List<user> delGroup(String ID){
+		for(int i = 0 ; i < list.size() ; i++){
+			if(list.get(i).ID.equals(ID)){
+				list.remove(i);
+				break;
+			}
+		}
 		return list;
 	}
 	

@@ -18,10 +18,23 @@ public class groupList {
 		return list;
 	}
 	
+	public static List<group> delGroup(String groupID){
+		for(int i = 0 ; i < list.size() ; i++){
+			if(list.get(i).groupID.equals(groupID)){
+				list.remove(i);
+				break;
+			}
+		}
+		return list;
+	}
+	
 	public static List<group> getgrouplist(){//初始化群组表
 		list = new ArrayList();
+		
 		for(int i=0 ;i<10;i++){
-			group g = new group("group_"+(i+1),"user_"+(i+1));
+			String groupid="group_"+(i+1);
+			String userid= "user_"+(i+1);
+			group g = new group(groupid,userid);
 			list.add(g);
 		}
 		
@@ -35,7 +48,7 @@ public class groupList {
 		int size= list.size();
 		for(int i=0;i<size;i++){
 			String str=" { "+list.get(i).groupID+" , ";
-			str += list.get(i).groupID+ " } ";
+			str += list.get(i).owerID+ " }, ";
 			string.append(str);
 		}
 		

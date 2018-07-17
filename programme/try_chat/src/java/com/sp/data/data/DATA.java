@@ -14,10 +14,14 @@ public class DATA {
 		grouplist.getgrouplist();
 		groupandmember.getGROUPlist();
 	}
+	
 	public static DATA getInstance(){
 		if(null == instance){
 			instance = new DATA();
 		}
 		return instance;
+	}
+	public static void addGroup(){
+		
 	}
 }
