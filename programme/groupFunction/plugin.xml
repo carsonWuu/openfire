@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<plugin>   
+    <!--类的全包名-->  
+    <class>org.jivesoftware.openfire.plugin.GroupPlugin</class>
+    <!--插件名称-->  
+    <name>groupFunction</name>  
+    <!--描述信息-->  
+    <description>群组聊天</description>  
+    <!--作者信息-->  
+    <author>Jacob</author>  
+    <!--版本信息-->  
+    <version>1.0.1</version>  
+    <!--创建、修改信息-->  
+    <date>11/04/2018</date>  
+</plugin>
