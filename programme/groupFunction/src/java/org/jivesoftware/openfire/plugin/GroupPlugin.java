@@ -94,6 +94,7 @@ public class GroupPlugin implements PacketInterceptor, Plugin,
 		this.presenceControl = new PresenceControl(this.pushServer);
 		
 		cachedata = cacheDATA.getInstance();
+		grpList = cachedata.groupandmember.list;
 		
 	}
 

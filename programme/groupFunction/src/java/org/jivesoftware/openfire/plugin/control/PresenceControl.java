@@ -3,6 +3,7 @@ package org.jivesoftware.openfire.plugin.control;
 import java.util.List;
 
 import org.jivesoftware.openfire.plugin.bean.GroupBean;
+import org.jivesoftware.openfire.plugin.bean.RecvBean;
 import org.jivesoftware.openfire.plugin.bean.ReqBean;
 import org.jivesoftware.openfire.plugin.bean.UserBean;
 import org.jivesoftware.openfire.plugin.push.PushServer;
@@ -21,8 +22,8 @@ private PushServer pushServer;
 		// 这里修改为推送到所有的群,并非活动群
 		// 直接返回
 		
-		
-		pushServer.recvClientMsg("grp_client_pre", reqBean, null, session);
+		RecvBean ret = new RecvBean(0,"ok");
+		pushServer.recvClientMsg("grp_client_pre", reqBean, ret, session);
 		return 0;
 	}
 }

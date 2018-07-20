@@ -123,6 +123,7 @@ public class PushServer {
 		message.setSubject(subject);
 		message.setBody(body);
 		System.out.println("server-->client:"+message.toXML());
+		
 		server.getRoutingTable().routePacket(jid, message, true);
 	}
 	
