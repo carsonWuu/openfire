@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.jivesoftware.openfire.plugin.GroupPlugin;
 import org.jivesoftware.openfire.plugin.bean.GroupBean;
+import org.jivesoftware.openfire.plugin.bean.RecvBean;
 import org.jivesoftware.openfire.plugin.bean.ReqBean;
 import org.jivesoftware.openfire.plugin.bean.RespBean;
 import org.jivesoftware.openfire.plugin.bean.UserBean;
@@ -25,7 +26,13 @@ private PushServer pushServer;
 	
 	
 	public int pushMsg(ReqBean reqBean,Session session,List<GroupBean> grpList){
-		if (1 == reqBean.getAct()) {
+		
+		RecvBean ret = new RecvBean(0,"ok");
+		int ACT = reqBean.getAct();
+		
+		if(ACT !=1 && ACT !=2)return -1;
+		
+		if (1 == ACT) {
 			// 先判断群是否存在
 			boolean flag = true;
 			GroupBean grpBean = new GroupBean();
@@ -44,13 +51,14 @@ private PushServer pushServer;
 			
 			//	群聊
 			pushMsgGroup(reqBean, grpBean);
-		}else if (2 == reqBean.getAct()) {
+		}
+		else if (2 == ACT) {
 			
 			//	单聊,直接推送到个人
 			pushMsgSingle(reqBean, null);
 		}
 		
-		pushServer.recvClientMsg("grp_client_msg", reqBean, null, session);
+		pushServer.recvClientMsg("grp_client_msg", reqBean, ret, session);
 		return 0;
 	}
 	
