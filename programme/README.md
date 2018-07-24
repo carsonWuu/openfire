@@ -1,10 +1,18 @@
-## 项目一、try_chat/弃用
-## 项目二、groupFunction:聊天插件 
-> 该聊天插件使用openfire作为桥梁，建立服务器与客户端的连接，使用xml格式作为数据传输。该项目只使用Message进行数据传输，subject作为功能识别（下面的是一个功能点在这里进行判断），所有的信息写在body中，Message的头部用到的信息较少。服务器端不使用smack。
+### 项目一、try_chat/弃用
+### 项目二、groupFunction:聊天插件 
+> 该聊天插件使用openfire作为桥梁，建立服务器与客户端的连接，使用xml格式作为数据传输。该项目只使用Message进行数据传输，subject作为功能识别（所有的功能点在这里进行判断），所有的信息写在body中，Message的头部用到的信息较少。服务器端不使用smack。客户端使用smack(客户端是安卓。本项目不包含安卓部分，但是在后台使用smack收发信息模拟客户端。smack在src/java中。)
 ```
 <message id="Kowrj-5" to="add1@192.168.1.101" from="add2@192.168.1.101/Smack" type="chat">
   <subject>grp_client_create_del</subject>
-  <body>{"act":1,"grp_id":"group_1","u_list":[{"u_id":"user1","type":1},{"u_id":"user2","type":0},{"u_id":"333","type":0}],"master":"user1"}</body>
+  <body>
+  {
+  "act":1,
+  "grp_id":"group_1",
+  "u_list":
+    [{"u_id":"user1","type":1},{"u_id":"user2","type":0},{"u_id":"333","type":0}],
+   "master":"user1"
+   }
+   </body>
   <thread>s4F2W0</thread>
 </message>
 ```
