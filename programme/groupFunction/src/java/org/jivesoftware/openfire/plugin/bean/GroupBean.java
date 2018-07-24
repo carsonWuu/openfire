@@ -40,4 +40,8 @@ public class GroupBean {
 	public void setMasterId(String masterId) {
 		this.masterId = masterId;
 	}
+	@Override
+	public String toString(){
+		return "{grpID: "+this.grpId+" , "+" userList: "+this.userList+" }";
+	}
 }

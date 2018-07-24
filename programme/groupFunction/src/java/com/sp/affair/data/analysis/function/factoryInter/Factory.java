@@ -16,8 +16,9 @@ public abstract class Factory {
 	protected String grp_id;
 	protected String master;
 	protected List<UserBean> u_list = new ArrayList();
-	protected cacheDATA data;
-	
+	protected List<GroupBean> grpList = new ArrayList();
+//	protected cacheDATA data;
+	protected String alias;
 	protected int type;
 	protected int linkid;
 	protected String msg;
@@ -29,10 +30,9 @@ public abstract class Factory {
 	
 	public void cout(){
 		
-		int size = this.data.groupandmember.list.size();
+		int size = grpList.size();
 		System.out.println("现在成员群组数量："+size);
-		System.out.println(this.data.groupandmember.tostring());
-		
+		System.out.println(grpList.toString());	
 		
 	}
 	public static String getTime(){

@@ -5,12 +5,18 @@ public class UserBean {
 	private int type;
 	private int state;
 	private String alias;
+	private boolean open;
 	
 	
 	public UserBean(){};
 	public UserBean(String u_id ,int type){
 		this.u_id = u_id;
 		this.type = type;
+	};
+	public UserBean(String u_id ,int type,boolean open){
+		this.u_id = u_id;
+		this.type = type;
+		this.open = open;
 	};
 	public String getAlias() {
 		return alias;
@@ -35,6 +41,16 @@ public class UserBean {
 	}
 	public void setType(int type) {
 		this.type = type;
+	}
+	public void setOpen(boolean open){
+		this.open= open;
+	}
+	public boolean getOpen(){
+		return this.open;
+	}
+	@Override
+	public String toString(){
+		return "{ u_id: "+this.u_id+", "+" type : " +this.type +"},";
 	}
 	
 }

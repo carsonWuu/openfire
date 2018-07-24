@@ -186,7 +186,7 @@ public class GroupPlugin implements PacketInterceptor, Plugin,
 						e1.printStackTrace();
 					}
 					try {
-						if ("grp_client_kick".equals(subjectAction)) {	//	添加/踢出群员
+						if ("grp_client_kick".equals(subjectAction)) {	//	添加/踢出群员/退出群组
 							System.out.println("grp_client_kick");
 							grpControl.editGrpInfo(reqBean,session, grpList);
 						}

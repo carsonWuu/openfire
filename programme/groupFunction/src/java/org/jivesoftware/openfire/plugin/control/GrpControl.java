@@ -22,6 +22,7 @@ import com.sp.affair.data.analysis.function.createGroup.createGroup;
 import com.sp.affair.data.analysis.function.delMember.delMember;
 import com.sp.affair.data.analysis.function.deleteGroup.deleteGroup;
 import com.sp.affair.data.analysis.function.factoryInter.Factory;
+import com.sp.affair.data.analysis.function.quitGroup.quitGroup;
 import com.sp.message.returnMessage.returnMessage;
 
 public class GrpControl {
@@ -47,14 +48,19 @@ public class GrpControl {
 		
 		
 		if(act == 1){//添加群组
-			addORdel = new addMember(reqBean);
+			addORdel = new addMember(reqBean,grpList);
 			ret = addORdel.doAction();
 			addORdel.cout();
 		}
 		else if(act == 2){//删除群组
-			addORdel = new delMember(reqBean);
+			addORdel = new delMember(reqBean,grpList);
 			ret = addORdel.doAction();
 			addORdel.cout();
+		}
+		else if(act ==3){//退出群组
+			addORdel = new quitGroup(reqBean,grpList);
+			ret = addORdel.doAction();
+			addORdel.doAction();
 		}
 		else{
 			ret = new RecvBean(5, "Act错误");
@@ -68,7 +74,7 @@ public class GrpControl {
 			 * ②向被操作用户发送信息
 			 */
 		
-			pushServer.pushToAnyone(addORdel.storeGroup, "grp_server_kick", "添加、踢人用户成功");//通知被操作人
+			pushServer.pushToAnyone(addORdel.storeGroup, "grp_server_kick", ret.getMsg());//通知被操作人
 			
 		}
 		
@@ -92,12 +98,12 @@ public class GrpControl {
 		
 		
 		if(act == 1){//添加群组
-			createORdel = new createGroup(reqBean);
+			createORdel = new createGroup(reqBean,grpList);
 			ret = createORdel.doAction();
 			createORdel.cout();
 		}
 		else if(act == 2){//删除群组
-			createORdel = new deleteGroup(reqBean);
+			createORdel = new deleteGroup(reqBean,grpList);
 			ret = createORdel.doAction();
 			createORdel.cout();
 		}
@@ -113,7 +119,7 @@ public class GrpControl {
 			 * ②向被操作用户发送信息
 			 */
 		
-			pushServer.pushToAnyone(createORdel.storeGroup, "grp_server_create_del", "创建或解散操作成功");//通知被操作人
+			pushServer.pushToAnyone(createORdel.storeGroup, "grp_server_create_del", ret.getMsg());//通知被操作人
 			
 		}
 		

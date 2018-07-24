@@ -23,7 +23,7 @@ import com.sp.message.returnMessage.returnMessage;
  */
 public class createGroup extends Factory{
 	
-	public createGroup(ReqBean req){
+	public createGroup(ReqBean req,List<GroupBean> grpList){
 		this.act = req.getAct();
 		
 		this.master = req.getMaster();
@@ -35,7 +35,10 @@ public class createGroup extends Factory{
 		this.u_list = req.getU_list();
 
 		
-		this.data = cacheDATA.getInstance();
+		
+		this.alias = req.getAlias();
+		
+		this.grpList = grpList;
 		
 	}
 	@Override
@@ -58,8 +61,7 @@ public class createGroup extends Factory{
 		
 		List<UserBean> addUserlist = this.u_list; //u_lsit
 		List<GroupBean> addGrouplist = new ArrayList(); //groupANDmember
-		
-		
+			
 		
 		/*
 		 * 创建群号，唯一
@@ -70,7 +72,7 @@ public class createGroup extends Factory{
 		
 		storeGroup =new GroupBean(groupID,this.u_list);
 		
-		this.data.groupandmember.addGroup(storeGroup);
+		this.grpList.add(storeGroup);
 		
 		ret =  new RecvBean(0, "创建群组成功",groupID);
 			

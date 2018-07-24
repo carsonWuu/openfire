@@ -32,7 +32,7 @@ private PushServer pushServer;
 		
 		if(ACT !=1 && ACT !=2)return -1;
 		
-		if (1 == ACT) {
+		if (1 == ACT) {//群聊
 			// 先判断群是否存在
 			boolean flag = true;
 			GroupBean grpBean = new GroupBean();
@@ -52,7 +52,7 @@ private PushServer pushServer;
 			//	群聊
 			pushMsgGroup(reqBean, grpBean);
 		}
-		else if (2 == ACT) {
+		else if (2 == ACT) {//单聊
 			
 			//	单聊,直接推送到个人
 			pushMsgSingle(reqBean, null);

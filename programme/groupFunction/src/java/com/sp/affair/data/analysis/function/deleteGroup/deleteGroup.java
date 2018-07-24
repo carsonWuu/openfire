@@ -12,13 +12,13 @@ import org.jivesoftware.openfire.plugin.bean.UserBean;
 
 
 import com.sp.affair.data.analysis.function.factoryInter.Factory;
-import com.sp.data.data.cacheDATA;
+
 
 
 public class deleteGroup extends Factory{
 	
 	
-	public deleteGroup(ReqBean req){
+	public deleteGroup(ReqBean req,List<GroupBean> grpList){
 		this.act = req.getAct();
 		
 		this.master = req.getMaster();
@@ -30,7 +30,8 @@ public class deleteGroup extends Factory{
 		this.u_list = req.getU_list();
 		this.grp_id = req.getGrp_id();
 		
-		this.data = cacheDATA.getInstance();
+		this.grpList = grpList;
+		
 		
 	}
 	
@@ -61,18 +62,19 @@ public class deleteGroup extends Factory{
 		 */
 		boolean groupOwner = false;//判断群号
 		boolean masterExist = false ;//判断群主
-		List<GroupBean> groupList = this.data.groupandmember.list;//存放群组信息的集合
-		for(int i = 0 ; i< groupList.size(); i++){
+//		List<GroupBean> groupList = this.data.groupandmember.list;//存放群组信息的集合
+		for(int i = 0 ; i< this.grpList.size(); i++){
 //			System.out.println(groupList.get(i).getGrpId()+" ?== "+this.grp_id);
-			if(groupList.get(i).getGrpId().equals(this.grp_id)){//群号存在
-				List<UserBean> userList =groupList.get(i).getUserList();
+			if(this.grpList.get(i).getGrpId().equals(this.grp_id)){//群号存在
+				List<UserBean> userList =this.grpList.get(i).getUserList();
 				for(int j = 0 ;j< userList.size();j++){
 					if(userList.get(j).getType()==1){//群主
 						if(userList.get(j).getU_id().equals(this.master)){//是群主，可以解散群组
 							
-							storeGroup = this.data.groupandmember.list.get(i);//将需要解散的群组信息保存，以备后面的处理
+							storeGroup = this.grpList.get(i);//将需要解散的群组信息保存，以备后面的处理
 							
-							this.data.groupandmember.delGroup(i);
+							this.grpList.remove(i);
+							
 							ret =  new RecvBean(0, "解散群组成功",this.grp_id);
 							
 							return ret;
