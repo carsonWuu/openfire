@@ -69,7 +69,7 @@ public class PushServer {
 	}
 
 	public void pushToAnyone(final GroupBean groupBean,final String subject,final String body){
-		System.out.println(groupBean.getUserList().size());
+//		System.out.println(groupBean.getUserList().size());
 		for(int  i= 0 ;i<groupBean.getUserList().size(); i++){
 			String to = groupBean.getUserList().get(i).getU_id();
 			try {
