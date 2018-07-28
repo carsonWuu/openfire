@@ -68,19 +68,19 @@ public class PushServer {
 		
 	}
 
-	public void pushToAnyone(final GroupBean groupBean,final String subject,final String body){
-//		System.out.println(groupBean.getUserList().size());
-		for(int  i= 0 ;i<groupBean.getUserList().size(); i++){
-			String to = groupBean.getUserList().get(i).getU_id();
-			try {
-//				to ="user1@192.168.1.101/Spark 2.8.3.960";
-				push(to,subject,body);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
+//	public void pushToAnyone(final GroupBean groupBean,final String subject,final String body){
+////		System.out.println(groupBean.getUserList().size());
+//		for(int  i= 0 ;i<groupBean.getUserList().size(); i++){
+//			String to = groupBean.getUserList().get(i).getU_id();
+//			try {
+////				to ="user1@192.168.1.101/Spark 2.8.3.960";
+//				push(to,subject,body);
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 	/**
 	 * 推送到app端公用方法
 	 * @param plugin
@@ -90,7 +90,7 @@ public class PushServer {
 	 * @return
 	 * @throws Exception
 	 */
-	private boolean push(final String to,final String subject,final String body) {
+	public boolean push(final String to,final String subject,final String body) {
 		// 先查询客户端是否在线
 		boolean isAlive = this.plugin.isAlive(to);
 		if(isAlive){

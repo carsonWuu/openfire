@@ -44,9 +44,10 @@ public class createGroup extends Factory{
 	@Override
 	public String toString(){
 		StringBuffer str= new StringBuffer();
-		str.append(this.act);
-		str.append(this.u_list);
-		str.append(this.master);
+		str.append("act: "+this.act+" , ");
+		str.append("u_list: "+this.u_list+" , ");
+		str.append("master: "+this.master+" , ");
+		str.append("alias: "+this.alias+"\n");
 		return str.toString();
 	}
 	
@@ -70,7 +71,7 @@ public class createGroup extends Factory{
 		
 		String groupID = createGroupID();
 		
-		storeGroup =new GroupBean(groupID,this.u_list);
+		storeGroup =new GroupBean(groupID,this.alias,this.u_list);
 		
 		this.grpList.add(storeGroup);
 		

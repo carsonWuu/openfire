@@ -8,13 +8,15 @@ public class GroupBean {
 	private List<UserBean> userList;
 	private String masterId;
 	private int state;
+	private String alias;//别名
 	
 	public GroupBean(){
 		
 	}
-	public GroupBean(String grpid,List<UserBean> userlist){
+	public GroupBean(String grpid,String alias,List<UserBean> userlist){
 		this.grpId = grpid;
 		this.userList = userlist;
+		this.alias = alias;
 	}
 	public int getState() {
 		return state;
@@ -40,8 +42,14 @@ public class GroupBean {
 	public void setMasterId(String masterId) {
 		this.masterId = masterId;
 	}
+	public void setAlias(String alias){
+		this.alias = alias;
+	}
+	public String getAlias(){
+		return this.alias;
+	}
 	@Override
 	public String toString(){
-		return "{grpID: "+this.grpId+" , "+" userList: "+this.userList+" }";
+		return "{grpID: "+this.grpId+" , "+"alias: "+this.alias+" , "+" userList: "+this.userList+" }";
 	}
 }

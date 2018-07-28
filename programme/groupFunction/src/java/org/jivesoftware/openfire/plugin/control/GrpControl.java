@@ -47,12 +47,12 @@ public class GrpControl {
 		Factory addORdel = null;
 		
 		
-		if(act == 1){//添加群组
+		if(act == 1){//添加群成员
 			addORdel = new addMember(reqBean,grpList);
 			ret = addORdel.doAction();
 			addORdel.cout();
 		}
-		else if(act == 2){//删除群组
+		else if(act == 2){//删除群成员
 			addORdel = new delMember(reqBean,grpList);
 			ret = addORdel.doAction();
 			addORdel.cout();
@@ -73,8 +73,8 @@ public class GrpControl {
 			 * ①反馈信息给操作用户
 			 * ②向被操作用户发送信息
 			 */
-		
-			pushServer.pushToAnyone(addORdel.storeGroup, "grp_server_kick", ret.getMsg());//通知被操作人
+			pushEditMsg(reqBean,addORdel.storeGroup, "grp_server_kick",session);//通知被操作人
+			
 			
 		}
 		
@@ -119,7 +119,7 @@ public class GrpControl {
 			 * ②向被操作用户发送信息
 			 */
 		
-			pushServer.pushToAnyone(createORdel.storeGroup, "grp_server_create_del", ret.getMsg());//通知被操作人
+			pushCreMsg(reqBean,createORdel.storeGroup, "grp_server_create_del",session);//通知被操作人
 			
 		}
 		
@@ -133,7 +133,7 @@ public class GrpControl {
 	 * @param reqBean
 	 * @param grpBean
 	 */
-	public void pushCreMsg(ReqBean reqBean,GroupBean grpBean){
+	public void pushCreMsg(ReqBean reqBean,GroupBean grpBean,String ret_subject,Session session){
 		try {
 			// 通知除自己之外的所有人
 			RespBean respBean = new RespBean();
@@ -145,12 +145,13 @@ public class GrpControl {
 			respBean.setU_list(reqBean.getU_list());
 			for (UserBean userBean : grpBean.getUserList()) {
 				if (!reqBean.getMaster().equals(userBean.getU_id())) {
-					pushServer.pushDetail(userBean.getU_id(), "grp_server_create_del", GsonUtil.gson.toJson(respBean));
+//					System.out.println(reqBean.getMaster()+"=="(userBean.getU_id()));
+					pushServer.push(userBean.getU_id(), ret_subject , GsonUtil.gson.toJson(respBean));
 				}
 			}
-			if (!reqBean.getMaster().equals(grpBean.getMasterId())) {
-				pushServer.pushDetail(grpBean.getMasterId(), "grp_server_create_del", GsonUtil.gson.toJson(respBean));
-			}
+//			if (!reqBean.getMaster().equals(grpBean.getMasterId())) {
+//				pushServer.pushDetail(grpBean.getMasterId(), "grp_server_create_del", GsonUtil.gson.toJson(respBean));
+//			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -192,7 +193,7 @@ public class GrpControl {
 	 * @param reqBean
 	 * @param grpBean
 	 */
-	public void pushEditMsg(ReqBean reqBean,GroupBean grpBean){
+	public void pushEditMsg(ReqBean reqBean,GroupBean grpBean,String ret_subject,Session session){
 		try {
 			// 通知除自己之外的所有人
 			RespBean respBean = new RespBean();
@@ -202,11 +203,11 @@ public class GrpControl {
 			respBean.setMaster(reqBean.getMaster());
 			for (UserBean userBean : grpBean.getUserList()) {
 				if (!reqBean.getMaster().equals(userBean.getU_id())) {
-					pushServer.pushDetail(userBean.getU_id(), "grp_server_kick", GsonUtil.gson.toJson(respBean));
+					pushServer.pushDetail(userBean.getU_id(), ret_subject, GsonUtil.gson.toJson(respBean));
 				}
 			}
 			if (!reqBean.getMaster().equals(grpBean.getMasterId())) {
-				pushServer.pushDetail(grpBean.getMasterId(), "grp_server_kick", GsonUtil.gson.toJson(respBean));
+				pushServer.pushDetail(grpBean.getMasterId(), ret_subject , GsonUtil.gson.toJson(respBean));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

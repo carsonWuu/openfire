@@ -32,33 +32,47 @@ private PushServer pushServer;
 		
 		if(ACT !=1 && ACT !=2)return -1;
 		
+		
+		
 		if (1 == ACT) {//群聊
 			// 先判断群是否存在
-			boolean flag = true;
+			boolean flag = false;
 			GroupBean grpBean = new GroupBean();
 			for (int i = 0; i < grpList.size(); i++) {
 				if (reqBean.getGrp_id().equals(grpList.get(i).getGrpId())) {
 					grpBean = grpList.get(i);
-					flag = false;
+					flag = true;
 					break;
 				}
 			}
-			if (flag) {
+			if (flag) {//群组存在，发送消息至群组
+				System.out.println(reqBean.getFrom());
+				if(userINgroup(reqBean.getFrom(),grpBean)==-1){
+					System.out.println("不在组内");
+					ret = new RecvBean(8,"该成员不在组内");
+					pushServer.recvClientMsg("grp_client_msg", reqBean, ret, session);
+					
+					return -1;
+				}
+				pushServer.recvClientMsg("grp_client_msg", reqBean, ret, session);
+				pushMsgGroup(reqBean, grpBean,"grp_server_msg");//发送至群组其他人
 //				pushServer.recvClientMsg("grp_client_msg", reqBean, grpBean, session,2,"操作群/组ID不存在");
+				
+			}
+			else{//群组不存在
 				return 2;
 			}
 			
 			
-			//	群聊
-			pushMsgGroup(reqBean, grpBean);
+			
 		}
 		else if (2 == ACT) {//单聊
-			
+			pushServer.recvClientMsg("grp_client_msg", reqBean, ret, session);
 			//	单聊,直接推送到个人
-			pushMsgSingle(reqBean, null);
+			pushMsgSingle(reqBean, "grp_server_msg");
 		}
 		
-		pushServer.recvClientMsg("grp_client_msg", reqBean, ret, session);
+		
 		return 0;
 	}
 	
@@ -68,7 +82,7 @@ private PushServer pushServer;
 	 * @param reqBean
 	 * @param grpBean
 	 */
-	public void pushMsgSingle(ReqBean reqBean,GroupBean grpBean){
+	public void pushMsgSingle(ReqBean reqBean,String retSubject){
 		try {
 			// 插入数据库,获取linkid
 			Map<String, Object> params = new HashMap<String, Object>();
@@ -93,7 +107,7 @@ private PushServer pushServer;
 			respBean.setFrom(reqBean.getFrom());
 			respBean.setAlias("");
 			respBean.setGrp_id("");
-			pushServer.pushDetail(reqBean.getU_id(), "grp_server_msg", GsonUtil.gson.toJson(respBean));
+			pushServer.push(reqBean.getU_id(), retSubject, GsonUtil.gson.toJson(respBean));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -104,11 +118,13 @@ private PushServer pushServer;
 	
 	/**
 	 * 推送消息到指定群
-	 * @param reqBean
+	 * @param reqBean 
 	 * @param grpBean
+	 * @param retSubject
 	 */
-	public void pushMsgGroup(ReqBean reqBean,GroupBean grpBean){
+	public void pushMsgGroup(ReqBean reqBean,GroupBean grpBean,String retSubject){
 		try {
+			
 			// 插入数据库,获取linkid
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("c_grp_id", reqBean.getGrp_id());
@@ -134,16 +150,27 @@ private PushServer pushServer;
 			
 			for (UserBean userBean : grpBean.getUserList()) {
 				if (!reqBean.getFrom().equals(userBean.getU_id())) {
-					pushServer.pushDetail(userBean.getU_id(), "grp_server_msg", GsonUtil.gson.toJson(respBean));
+					pushServer.pushDetail(userBean.getU_id(), retSubject, GsonUtil.gson.toJson(respBean));
 				}
 			}
-			if (!reqBean.getFrom().equals(grpBean.getMasterId())) {
-				pushServer.pushDetail(grpBean.getMasterId(), "grp_server_msg", GsonUtil.gson.toJson(respBean));
-			}
+//			if (!reqBean.getFrom().equals(grpBean.getMasterId())) {
+//				pushServer.pushDetail(grpBean.getMasterId(), "grp_server_msg", GsonUtil.gson.toJson(respBean));
+//			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("push error");
 		}
+	}
+	public int userINgroup(String u_id,GroupBean groupBean){//判断用户是否在群组及返回实际位置
+		int index = -1;
+		List<UserBean> userList = groupBean.getUserList();
+		for(int i= 0 ;i <userList.size();i++){
+			if(u_id.equals(userList.get(i).getU_id())){
+				index = i ;
+				return index;
+			}
+		}
+		return index;
 	}
 }

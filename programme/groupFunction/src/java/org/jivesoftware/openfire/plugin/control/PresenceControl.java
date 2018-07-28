@@ -30,10 +30,10 @@ public class PresenceControl {
 		Factory presence = new inPresence(reqBean,grpList);
 		RecvBean ret  = presence.doAction();
 		pushServer.recvClientMsg("grp_client_pre", reqBean, ret, session);
-		pushPresenceGroup(reqBean,presence.storeGroup,session);
+		pushPresenceGroup(reqBean,presence.storeGroup,"grp_server_pre");
 		return 0;
 	}
-	public void pushPresenceGroup(ReqBean reqBean,GroupBean groupBean,Session session){
+	public void pushPresenceGroup(ReqBean reqBean,GroupBean groupBean,String retSubject){
 		try {// 通知除自己之外的所有人
 			RespBean respBean = new RespBean();
 			respBean.setU_id(reqBean.getU_id());
@@ -41,13 +41,10 @@ public class PresenceControl {
 			
 			for(int i = 0;i<groupBean.getUserList().size();i++){
 				if(!groupBean.getUserList().get(i).getU_id().equals(reqBean.getU_id())){
-					pushServer.pushDetail(groupBean.getUserList().get(i).getU_id(), "grp_server_pre", GsonUtil.gson.toJson(respBean));
+					pushServer.pushDetail(groupBean.getUserList().get(i).getU_id(), retSubject, GsonUtil.gson.toJson(respBean));
 				}
 			}
-			
-				
-			
-			
+
 			
 			
 		} catch (Exception e) {

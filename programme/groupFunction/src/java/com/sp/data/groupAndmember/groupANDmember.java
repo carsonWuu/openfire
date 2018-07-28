@@ -51,7 +51,7 @@ public class groupANDmember {
 			}
 			
 			
-			GroupBean g = new GroupBean(id,l);
+			GroupBean g = new GroupBean(id,id,l);
 			list.add(g);
 		}
 

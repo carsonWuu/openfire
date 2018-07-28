@@ -40,7 +40,7 @@ private PushServer pushServer;
 		
 		this.pushServer.recvClientMsg("grp_client_gps", reqBean, ret, session);
 		// 直接推送到所有有该用户的群/组
-		pushGpsGroup(reqBean, grpList,session);
+		pushGpsGroup(reqBean, grpList,"grp_server_gps");
 		return 0;
 	}
 	
@@ -51,11 +51,11 @@ private PushServer pushServer;
 	 * @param reqBean
 	 * @param grpBean
 	 */
-	public void pushGpsGroup(ReqBean reqBean,List<GroupBean> grpList,Session session){
-		try {// 通知除自己之外的所有人
+	public void pushGpsGroup(ReqBean reqBean,List<GroupBean> grpList,String retSubject){
+		try {// 通知除自己之外的所有人,所有的群友
 			RespBean respBean = new RespBean();
 			respBean.setU_id(reqBean.getU_id());
-			respBean.setFrom(reqBean.getFrom().split("@")[0]);
+//			respBean.setFrom(reqBean.getFrom());
 			respBean.setGps_list(reqBean.getGps_list());
 			
 			for(int i = 0;i<grpList.size();i++){
@@ -63,11 +63,11 @@ private PushServer pushServer;
 				int index = userINgroup(reqBean.getU_id(),groupBean);//用户的位置
 				if(index > -1){//存在
 					for(int j = 0 ; j< index ;j++){
-						pushServer.pushDetail(groupBean.getUserList().get(j).getU_id(), "grp_server_gps", GsonUtil.gson.toJson(respBean));
+						pushServer.pushDetail(groupBean.getUserList().get(j).getU_id(), retSubject, GsonUtil.gson.toJson(respBean));
 					}
 					
 					for(int j = index+1 ; j< groupBean.getUserList().size() ;j++){
-						pushServer.pushDetail(groupBean.getUserList().get(j).getU_id(), "grp_server_gps", GsonUtil.gson.toJson(respBean));
+						pushServer.pushDetail(groupBean.getUserList().get(j).getU_id(), retSubject, GsonUtil.gson.toJson(respBean));
 					}
 				}
 				

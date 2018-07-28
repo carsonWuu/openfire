@@ -9,6 +9,7 @@ import java.util.Map;
 
 
 
+
 import org.jivesoftware.openfire.PresenceManager;
 import org.jivesoftware.openfire.XMPPServer;
 import org.jivesoftware.openfire.container.Plugin;
@@ -25,6 +26,7 @@ import org.jivesoftware.openfire.plugin.control.MsgControl;
 import org.jivesoftware.openfire.plugin.control.PresenceControl;
 import org.jivesoftware.openfire.plugin.db.DBHelper;
 import org.jivesoftware.openfire.plugin.push.PushServer;
+import org.jivesoftware.openfire.plugin.util.Codec;
 import org.jivesoftware.openfire.plugin.util.GsonUtil;
 import org.jivesoftware.openfire.session.Session;
 import org.jivesoftware.openfire.user.UserManager;
@@ -164,8 +166,7 @@ public class GroupPlugin implements PacketInterceptor, Plugin,
 //				 }
 			     
 			     
-				JID from = message.getFrom();
-				JID to = message.getTo();
+				
 				String subjectAction = message.getSubject();
 				if(null != subjectAction){
 					System.out.println("---- package ----");
@@ -179,8 +180,8 @@ public class GroupPlugin implements PacketInterceptor, Plugin,
 					try {
 						reqBean = GsonUtil.gson.fromJson(express, ReqBean.class);
 						reqBean.setMsgLinkId(message.getID());
-						reqBean.setFrom(message.getFrom().getNode());
-						System.out.println("gson:getFrom::"+reqBean.getFrom());
+//						reqBean.setFrom(message.getFrom().getNode());
+						System.out.println("getFrom::"+reqBean.getFrom());
 					} catch (JsonSyntaxException e1) {
 						System.out.println("parse error");
 						e1.printStackTrace();
@@ -204,11 +205,13 @@ public class GroupPlugin implements PacketInterceptor, Plugin,
 						
 						else if ("grp_client_msg".equals(subjectAction)) {	//	客户端发送消息
 							System.out.println("grp_client_msg");
+//							reqBean.setMsg(Codec.decode(reqBean.getMsg()));
 							msgControl.pushMsg(reqBean, session, grpList);
 						}
 						
 						else if ("grp_client_gps".equals(subjectAction)) {	//	客户端GPS信息
 							System.out.println("grp_client_gps");
+//							reqBean.setMsg(Codec.decode(reqBean.getMsg()));
 							gpsControl.getGps(reqBean,session, grpList);
 						}
 					} 
