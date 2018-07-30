@@ -1,0 +1,4 @@
+create table APP_UserState(
+US_ID  Int private key comment 'ÓÃ»§ID,Ö÷¼ü',
+US_Name  int comment '×´Ì¬±àºÅ'
+);

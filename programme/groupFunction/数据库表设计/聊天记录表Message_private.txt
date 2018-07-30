@@ -1,0 +1,9 @@
+create table Message_private(
+M_ID    Int    comment'消息ID 主键，自增',
+M_PostMessages    Text    comment'消息内容',    
+M_status    Bit    comment'接收状态',   
+M_Time    Datetime    comment'发送时间',
+M_MessagesTypeID    Int    comment'消息类型ID 外键',
+M_FromUserID     Int    comment'发送者ID 指向用户表    外键',
+M_ToUserID     Int    comment'接收者ID)指向用户表    外键'
+);

@@ -1,0 +1,7 @@
+create table  APP_MessageGroup(
+GM_ID    Int    comment'群消息ID    主键',
+GM_Content    Text    comment'消息内容',    
+GM_FromID    Int    comment'发送者ID',    
+GM_FromUName    Varchar(30)    comment'发送者昵称',    
+GM_CreateTime    Datetime    comment'发送时间'    
+);

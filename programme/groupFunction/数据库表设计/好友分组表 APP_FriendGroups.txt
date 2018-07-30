@@ -1,0 +1,5 @@
+create table APP_FriendGroups(
+FG_ID  Int   comment'分组ID',
+FG_Name  Varchar(30)   comment'分组名字',
+FG_UserID   Int   comment'用户ID'
+);

@@ -1,0 +1,8 @@
+create table APP_friends(
+F_ID  Int comment '序号',
+F_FirendID  Int  comment '朋友的ID',
+F_UserID  Int  comment '自己的ID',
+F_Name  Varchar(30)  comment '备注昵称',
+F_FriendTypeID  Int  comment '好友类型',
+F_FriendGroupsID  Int  comment '所属分组ID'
+);

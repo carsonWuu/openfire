@@ -1,0 +1,9 @@
+create table  APP_UserGroups(
+UG_ID  Int  private key  comment'群ID',
+UG_Name    Varchar(30)  comment'群名称',   
+UG_CreateTime    Datetime  comment'创建时间',
+UG_AdminID    Int  comment'群主ID (指向用户表)',    
+UG_ICon    Varchar (30)  comment'群图标',    
+UG_Notice    Varchar (200)  comment'群公告',    
+UG_Intro    Varchar (200)  comment'群简介'
+);

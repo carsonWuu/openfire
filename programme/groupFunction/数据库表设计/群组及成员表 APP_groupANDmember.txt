@@ -1,0 +1,9 @@
+create table APP_groupANDmember(
+grp_id int comment'群号',
+alias varchar(255) comment'群名称',
+u_id varchar(255) comment'群成员ID',
+type int comment'群成员标识 0：成员 1：群主',
+open int comment'接收群信息 0：不接收 1：接收',
+state int comment'状态标识 0：下线 1：上线',
+key  group_user (grp_id,u_id)
+);
