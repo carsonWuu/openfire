@@ -12,9 +12,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.jivesoftware.database.DbConnectionManager;
-
+/*
+ * @Description:数据库操作类
+ * @date 31/7/2018 
+ */
 public class DBHelper {
-
+	/*
+	 * @Description SQL_update
+	 * @param tableName
+	 * @param Map:key-value
+	 * @param condition
+	 * @like : updata 'tableName' set 'key1' = 'value1','key2'='value2',... where 'condition' 
+	 */
 	public static int update(String tableName, Map fields, String condition)
 			throws SQLException {
 		Connection connect = DbConnectionManager.getConnection();
@@ -51,6 +60,14 @@ public class DBHelper {
 		return ret;
 	}
 
+	/*
+	 * @Description SQL_update
+	 * @param tableName
+	 * @param Map:key-value
+	 * @param condition
+	 * @param condv :values[]
+	 * @like : updata 'tableName' set 'key1' = 'value1','key2'='value2',... where 'condition' 
+	 */
 	public static int update(String tableName, Map fields, String condition,
 			Object... condv) throws SQLException {
 		Connection connect = DbConnectionManager.getConnection();
@@ -94,7 +111,12 @@ public class DBHelper {
 		return ret;
 	}
 
-
+	/*
+	 * @Description SQL_insert
+	 * @param tableName
+	 * @param Map:key-value
+	 * @like : insert into 'tableName'(key1,key2,...) values(value1,value2,...)  
+	 */
 	public static int insert(String tableName, Map fields) throws SQLException {
 		Connection connect = DbConnectionManager.getConnection();
 		PreparedStatement prep = null;
@@ -136,7 +158,74 @@ public class DBHelper {
 		}
 		return ret;
 	}
+	
+	/*
+	 * 事务提交，一次性提交多个插入
+	 */
+	public static void insertCommit(String tableName[],List<Map<String,Object>> list) throws SQLException {
+		Connection connect = DbConnectionManager.getConnection();
+		connect.setAutoCommit(false);
+		PreparedStatement prep[] = new PreparedStatement[list.size()];
+		
+		try {
+			for(int i_sql = 0; i_sql<tableName.length; i_sql++){
+				if (list.get(i_sql).size() < 1)break;
+				
+				StringBuffer sb = new StringBuffer("insert into ");
+				sb.append(tableName[i_sql]).append("(");
+				Iterator fds;
+				for (fds = list.get(i_sql).keySet().iterator(); fds.hasNext();) {
+					sb.append((String) fds.next());
+					if (fds.hasNext())
+						sb.append(",");
+				}
 
+				sb.append(") values (");
+				for (int i = 0; i < list.get(i_sql).size(); i++) {
+					sb.append("?");
+					if (i < list.get(i_sql).size() - 1)
+						sb.append(",");
+				}
+
+				sb.append(");");
+				
+				connect.prepareStatement(sb.toString());
+				prep[i_sql] = connect.prepareStatement(sb.toString());
+				fds = list.get(i_sql).keySet().iterator();
+				int index = 1;
+				Object v;
+				
+				for (; fds.hasNext(); prep[i_sql].setObject(index++, v)){
+					
+					v = list.get(i_sql).get(fds.next());
+					
+				}
+					
+
+				prep[i_sql].execute();
+
+			}
+		
+			connect.commit();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			for(int i_sql = 0; i_sql<tableName.length; i_sql++){
+				prep[i_sql].close();
+			}
+			connect.close();
+		}
+		
+	}
+	
+	/*
+	 * @Description SQL_insert
+	 * @param tableName
+	 * @param Map:key-value
+	 * @return Map:返回最后一次update或insert的ID 
+	 * @like : insert into 'tableName'(key1,key2,...) values(value1,value2,...)  
+	 */
 	public static Map insertAndReturnID(String tableName, Map fields)
 			throws SQLException {
 		Connection connect = DbConnectionManager.getConnection();
@@ -195,7 +284,13 @@ public class DBHelper {
 		}
 		return map;
 	}
-
+	
+	/*
+	 * @Description SQL_queryforList
+	 * @param sql
+	 * @param Object... params
+	 * @return ArrayList<Map>:返回所有的record
+	 */
 	public static List queryForList(String sql, Object... params)
 			throws SQLException {
 		Connection connect = DbConnectionManager.getConnection();
@@ -238,7 +333,13 @@ public class DBHelper {
 
 		return resultList;
 	}
-
+	
+	/*
+	 * @Description SQL_queryFor
+	 * @param sql
+	 * @param Object... params
+	 * @return Map:返回所有的record
+	 */
 	public static Map queryFor(String sql, Object... params)
 			throws SQLException {
 		Connection connect = DbConnectionManager.getConnection();

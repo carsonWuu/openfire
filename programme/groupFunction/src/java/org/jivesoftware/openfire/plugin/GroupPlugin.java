@@ -10,6 +10,7 @@ import java.util.Map;
 
 
 
+
 import org.jivesoftware.openfire.PresenceManager;
 import org.jivesoftware.openfire.XMPPServer;
 import org.jivesoftware.openfire.container.Plugin;
@@ -42,6 +43,7 @@ import org.xmpp.packet.Presence;
 
 import com.google.gson.JsonSyntaxException;
 import com.sp.data.data.cacheDATA;
+import com.sp.data.groupAndmember.groupANDmember;
 
 public class GroupPlugin implements PacketInterceptor, Plugin,
 		PropertyEventListener {
@@ -141,32 +143,8 @@ public class GroupPlugin implements PacketInterceptor, Plugin,
 		if (packet instanceof Message) {
 			Message message = (Message)packet;
 			
-			if(null != message && null != message.getBody() ){//message需要有内容才进行处理
-				
-				//session
-				
-//				 Message msg = new Message();
-//			     msg.setType(Message.Type.normal);
-//			     msg.setFrom(this.serverDomain);
-//			     msg.setBody("Hello from server");
-//			     msg.setBody(message.getBody());
-//			     session.process(msg);
-				
-				//getRoutingTable
-				
-//				 if(message.getBody().equals("test")){
-//					    Message message1 = new Message();  
-//					    message1.setFrom(message.getTo());  
-//					    message1.setTo(message.getFrom());  
-//					    message1.setBody("receive test");  
-//					  
-//					   
-//					  
-//					    server.getRoutingTable().routePacket(message.getFrom(), message1, true);  
-//				 }
-			     
-			     
-				
+			if(null != message && null != message.getBody() ){//message需要有内容才进行处理			     
+			     				
 				String subjectAction = message.getSubject();
 				if(null != subjectAction){
 					System.out.println("---- package ----");

@@ -23,7 +23,7 @@ public abstract class Factory {
 	protected int linkid;
 	protected String msg;
 	protected String u_id;
-	
+	protected cacheDATA cachedata ;
 	public static GroupBean storeGroup;//用来保存需要删除的群组信息
 	
 	public abstract RecvBean doAction();//行为

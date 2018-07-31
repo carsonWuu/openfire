@@ -40,6 +40,8 @@ public class createGroup extends Factory{
 		
 		this.grpList = grpList;
 		
+		this.cachedata =cacheDATA.getInstance();
+		
 	}
 	@Override
 	public String toString(){
@@ -71,10 +73,10 @@ public class createGroup extends Factory{
 		
 		String groupID = createGroupID();
 		
-		storeGroup =new GroupBean(groupID,this.alias,this.u_list);
+		storeGroup =new GroupBean(groupID,this.alias,this.u_list,this.master);
 		
-		this.grpList.add(storeGroup);
-		
+//		this.grpList.add(storeGroup);
+		this.cachedata.addGroup(storeGroup);
 		ret =  new RecvBean(0, "创建群组成功",groupID);
 			
 		return ret;

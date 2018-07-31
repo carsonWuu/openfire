@@ -46,7 +46,7 @@ private PushServer pushServer;
 				}
 			}
 			if (flag) {//群组存在，发送消息至群组
-				System.out.println(reqBean.getFrom());
+//				System.out.println(reqBean.getFrom());
 				if(userINgroup(reqBean.getFrom(),grpBean)==-1){
 					System.out.println("不在组内");
 					ret = new RecvBean(8,"该成员不在组内");

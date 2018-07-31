@@ -7,8 +7,9 @@ public class GroupBean {
 	private String grpId;
 	private List<UserBean> userList;
 	private String masterId;
-	private int state;
+	private int state;//暂时不用
 	private String alias;//别名
+	
 	
 	public GroupBean(){
 		
@@ -17,6 +18,12 @@ public class GroupBean {
 		this.grpId = grpid;
 		this.userList = userlist;
 		this.alias = alias;
+	}
+	public GroupBean(String grpid,String alias,List<UserBean> userlist,String master){
+		this.grpId = grpid;
+		this.userList = userlist;
+		this.alias = alias;
+		this.masterId =master;
 	}
 	public int getState() {
 		return state;

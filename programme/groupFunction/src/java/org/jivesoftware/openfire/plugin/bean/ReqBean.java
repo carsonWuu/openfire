@@ -9,7 +9,7 @@ public class ReqBean {
 	private String master;
 	private List<UserBean> u_list;
 	private int type;
-	private String msg;
+	private String msg;//如果是图片等大字节的数据流
 	private int linkid;
 	private String alias;
 	private String from;

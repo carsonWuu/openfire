@@ -40,7 +40,7 @@ public class PushServer {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Message message = new Message();
 		message.setFrom(this.serverDomain);
-		System.out.println(this.serverDomain);
+//		System.out.println(this.serverDomain);
 //		message.setID(System.currentTimeMillis()+"");
 		message.setID(reqBean.getMsgLinkId());
 		message.setType(Message.Type.normal);
