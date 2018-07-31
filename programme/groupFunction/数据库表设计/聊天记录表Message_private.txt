@@ -1,4 +1,4 @@
-create table Message_private(
+create table app_Messageprivate(
 M_ID    Int    comment'消息ID 主键，自增',
 M_PostMessages    Text    comment'消息内容',    
 M_status    Bit    comment'接收状态',   
