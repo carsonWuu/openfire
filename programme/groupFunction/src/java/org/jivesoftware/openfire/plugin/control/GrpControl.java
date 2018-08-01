@@ -58,7 +58,7 @@ public class GrpControl {
 			addORdel.cout();
 		}
 		else if(act ==3){//退出群组
-			addORdel = new quitGroup(reqBean,grpList);
+			addORdel = new quitGroup(reqBean);
 			ret = addORdel.doAction();
 			addORdel.doAction();
 		}

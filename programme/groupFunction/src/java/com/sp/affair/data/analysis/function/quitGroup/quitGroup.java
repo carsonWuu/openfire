@@ -11,19 +11,21 @@ import org.jivesoftware.openfire.plugin.bean.ReqBean;
 import org.jivesoftware.openfire.plugin.bean.UserBean;
 
 import com.sp.affair.data.analysis.function.factoryInter.Factory;
+import com.sp.data.data.cacheDATA;
 
 
 public class quitGroup extends Factory{
 
 
-	public quitGroup(ReqBean req,List<GroupBean> grpList){
+	public quitGroup(ReqBean req){
 		this.act = req.getAct();
 		
 		this.grp_id = req.getGrp_id();
 		
 		this.master = req.getMaster();
 			
-		this.grpList = grpList;
+		this.cachedata = cacheDATA.getInstance();
+		
 		
 	}
 	@Override
@@ -51,13 +53,13 @@ public class quitGroup extends Factory{
 		boolean u_idExist = false;//判断需添加用户不存在
 //		List<GroupBean> groupList = this.data.groupandmember.list;//存放群组信息的集合
 		int indexU=-1;
-		for(int i = 0 ; i< grpList.size(); i++){
+		for(int i = 0 ; i< this.cachedata.groupandmember.list.size(); i++){
 //			System.out.println(groupList.get(i).getGrpId()+" ?== "+this.grp_id);
-			if(grpList.get(i).getGrpId().equals(this.grp_id)){//群号存在
+			if(this.cachedata.groupandmember.list.get(i).getGrpId().equals(this.grp_id)){//群号存在
 				
 				groupOwner = true;//群号存在
 				
-				List<UserBean> userList =grpList.get(i).getUserList();
+				List<UserBean> userList =this.cachedata.groupandmember.list.get(i).getUserList();
 				for(int j = 0 ;j< userList.size();j++){
 					if(userList.get(j).getType()==1){//群主
 						
@@ -73,20 +75,22 @@ public class quitGroup extends Factory{
 					}
 					
 					if(userList.get(j).getU_id().equals(this.master)){//需退出的成员存在
-						storeGroup = this.grpList.get(i);//将需要解散的群组信息保存，以备后面的处理
-						u_idExist = true;
-						grpList.get(i).getUserList().remove(j);//踢出用户
-						ret =  new RecvBean(0, "退出群组成功",this.grp_id);
+						storeGroup = this.cachedata.groupandmember.list.get(i);//将需要解散的群组信息保存，以备后面的处理
+						
+						int ret_sql= this.cachedata.delMember(this.grp_id, this.master, i, j);
+						if(ret_sql==0)ret =  new RecvBean(0, "退出群组成功",this.grp_id);
+						else if(ret_sql==99)ret = new RecvBean(99,"数据库修改失败，请重试",this.grp_id);
 						return ret;
 					}
 					
 				}
 				
 				if(masterExist){//master为群主解散该群
-					storeGroup = this.grpList.get(i);//将需要解散的群组信息保存，以备后面的处理
-					this.grpList.remove(indexU);
+					storeGroup = this.cachedata.groupandmember.list.get(i);//将需要解散的群组信息保存，以备后面的处理
 					
-					ret =  new RecvBean(0, "群主解散群组成功",this.grp_id);
+					int ret_sql= this.cachedata.delGroup(this.grp_id, i);
+					if(ret_sql==0)ret =  new RecvBean(0, "群主解散群组成功",this.grp_id);
+					else if(ret_sql==99)ret = new RecvBean(99,"数据库修改失败，请重试",this.grp_id);
 					return ret;
 											
 				}
