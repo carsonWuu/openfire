@@ -48,12 +48,12 @@ public class GrpControl {
 		
 		
 		if(act == 1){//添加群成员
-			addORdel = new addMember(reqBean,grpList);
+			addORdel = new addMember(reqBean);
 			ret = addORdel.doAction();
 			addORdel.cout();
 		}
-		else if(act == 2){//删除群成员
-			addORdel = new delMember(reqBean,grpList);
+		else if(act == 2){//踢出群成员
+			addORdel = new delMember(reqBean);
 			ret = addORdel.doAction();
 			addORdel.cout();
 		}
@@ -98,12 +98,12 @@ public class GrpControl {
 		
 		
 		if(act == 1){//添加群组
-			createORdel = new createGroup(reqBean,grpList);
+			createORdel = new createGroup(reqBean);
 			ret = createORdel.doAction();
 			createORdel.cout();
 		}
 		else if(act == 2){//删除群组
-			createORdel = new deleteGroup(reqBean,grpList);
+			createORdel = new deleteGroup(reqBean);
 			ret = createORdel.doAction();
 			createORdel.cout();
 		}

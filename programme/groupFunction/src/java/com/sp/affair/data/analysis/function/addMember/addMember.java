@@ -19,14 +19,14 @@ import com.sp.data.data.cacheDATA;
 
 
 public class addMember extends Factory{
-	public addMember(ReqBean req,List<GroupBean> grpList){
+	public addMember(ReqBean req){
 		this.act = req.getAct();
 		
 		this.grp_id = req.getGrp_id();
 		this.u_id = req.getU_id();
 		this.master = req.getMaster();
 			
-		this.grpList = grpList;
+		this.cachedata =cacheDATA.getInstance();
 		
 	}
 	@Override
@@ -53,11 +53,11 @@ public class addMember extends Factory{
 		boolean masterExist = false ;//判断操作者存在
 		boolean u_idExist = false;//判断需添加用户不存在
 //		List<GroupBean> groupList = grpList;//存放群组信息的集合
-		for(int i = 0 ; i< grpList.size(); i++){
+		for(int i = 0 ; i< this.cachedata.groupandmember.list.size(); i++){
 //			System.out.println(groupList.get(i).getGrpId()+" ?== "+this.grp_id);
-			if(grpList.get(i).getGrpId().equals(this.grp_id)){//群号存在
+			if(this.cachedata.groupandmember.list.get(i).getGrpId().equals(this.grp_id)){//群号存在
 				
-				List<UserBean> userList =grpList.get(i).getUserList();
+				List<UserBean> userList =this.cachedata.groupandmember.list.get(i).getUserList();
 				for(int j = 0 ;j< userList.size();j++){
 //					if(userList.get(j).getType()==1){//群主
 					
@@ -77,12 +77,19 @@ public class addMember extends Factory{
 					}
 					else{//可以添加用户*******************
 						
-						grpList.get(i).getUserList().add(new UserBean(this.u_id,0));//添加用户
+						int ret_sql= this.cachedata.addMember(this.grp_id,this.u_id);
+//						grpList.get(i).getUserList().add(new UserBean(this.u_id,0));//添加用户
 						
-						storeGroup = grpList.get(i);//将需要解散的群组信息保存，以备后面的处理
+						storeGroup = this.cachedata.groupandmember.list.get(i);//将需要解散的群组信息保存，以备后面的处理
 						
 						
-						ret = new RecvBean(0,"添加用户成功",this.grp_id);
+						if(ret_sql==0){
+							this.cachedata.groupandmember.list.get(i).getUserList().add(new UserBean(this.u_id,0));
+							ret = new RecvBean(0,"添加用户进群组成功",this.grp_id);
+						}
+						else if(ret_sql==99)ret =new RecvBean(ret_sql,"数据库修改失败，请重试",this.grp_id);
+						
+						
 						return ret ;
 					}
 				}

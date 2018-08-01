@@ -11,11 +11,9 @@ import org.jivesoftware.openfire.plugin.db.DBHelper;
  * [{id,userlist{type,u_id}},...]
  */
 public class groupANDmember {
-//	public static void main(String args[]){
-//		groupANDmember.InitGrouplist();
-//	}
+
 	public static List<GroupBean> list = new ArrayList();
-	public static void addGroup(GroupBean g){
+	public static int addGroup(GroupBean g){
 		/*
 		 * 一、数据库更新：同时更新两张表
 		 * 1.app_usergroups
@@ -24,6 +22,7 @@ public class groupANDmember {
 		 * 二、缓存更新：群组集合中添加一个群信息。
 		 */
 		
+		int ret =0;
 		
 		String UG_ID = g.getGrpId();
 		String UG_Name =g.getAlias();
@@ -75,30 +74,80 @@ public class groupANDmember {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			System.out.println("创建群组失败，原因："+e);
-		}
-		finally{
+			ret= 99;
 			
 		}
-		
-		
-	}
-	public static List<GroupBean> delGroup(String ID){//根据群组ID删除
-		for(int i = 0 ; i < list.size() ; i++){
-			if(list.get(i).getGrpId().equals(ID)){
-				list.remove(i);
-				break;
-			}
+		finally{
+			return ret;
 		}
-		return list;
+		
+		
 	}
-	public static List<GroupBean> delGroup(int index){//根据群组ID删除
+	public static int delGroup(String ID,int index){//根据群组ID删除
+		/*
+		 * 一、数据库更新：同时更新两张表
+		 * 1.app_usergroups
+		 * 2.app_groupandmember
+		 * 
+		 * 二、缓存更新：群组集合中添加一个群信息。
+		 */
+		int ret = 0;
+		String sql[]=new String[2];
+		sql[0]="delete from app_usergroups where UG_ID=\""+ID+"\"";
+		sql[1]="delete from app_groupandmember where grp_id=\""+ID+"\"";
 		
-		list.remove(index);
+		try{
+			DBHelper.updateCommit(sql);
+			list.remove(index);
+		}
+		catch(Exception e){
+			ret = 99;
+			System.out.println("解散群组失败，原因："+e);
+		}
+		finally{
+			return ret;
+		}
 		
-		return list;
 	}
 	
-	
+	public static int addMember(String grp_id,String u_id){
+		int ret =0;
+		String tables[]=new String[1];
+		tables[0]="app_groupandmember";
+		List<Map<String,Object>> listM=new ArrayList();
+		Map<String,Object> map =new HashMap();
+		map.put("grp_id", grp_id);
+		map.put("u_id", u_id);
+		listM.add(map);
+		try{
+			DBHelper.insertCommit(tables,listM);
+			
+		}
+		catch(Exception e){
+			ret = 99;
+			System.out.println("解散群组失败，原因："+e);
+		}
+		finally{
+			return ret;
+		}
+	}
+	public static int delMember(String grp_id ,String u_id,int i,int index){
+		int ret = 0;
+		String sql[]=new String[1];
+		sql[0]="delete from app_groupandmember where grp_id= \""+grp_id+"\" && u_id =\""+u_id+"\"";
+		try{
+			DBHelper.updateCommit(sql);
+			list.get(i).getUserList().remove(index);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("创建群组失败，原因："+e);
+			ret= 99;
+			
+		}
+		finally{
+			return ret;
+		}
+	}
 	public static List<GroupBean> InitGrouplist(){//初始化群组表
 		list = new ArrayList();
 		

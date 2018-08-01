@@ -169,7 +169,7 @@ public class DBHelper {
 		
 		try {
 			for(int i_sql = 0; i_sql<tableName.length; i_sql++){
-				if (list.get(i_sql).size() < 1)break;
+				
 				
 				StringBuffer sb = new StringBuffer("insert into ");
 				sb.append(tableName[i_sql]).append("(");
@@ -216,6 +216,31 @@ public class DBHelper {
 			}
 			connect.close();
 		}
+		
+	}
+	public static void updateCommit(String sql[]) throws SQLException{
+		Connection con =DbConnectionManager.getConnection();
+		con.setAutoCommit(false);
+		PreparedStatement prep[]= new PreparedStatement[sql.length];
+		try{
+			for(int i =0 ;i<sql.length;i++){
+//				System.out.println(sql[i]);
+				prep[i] = con.prepareStatement(sql[i]);
+				prep[i].execute();
+			}
+			con.commit();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			
+		}
+		finally{
+			for(int i = 0;i<sql.length;i++){
+				prep[i].close();
+			}
+			con.close();
+		}
+		
 		
 	}
 	

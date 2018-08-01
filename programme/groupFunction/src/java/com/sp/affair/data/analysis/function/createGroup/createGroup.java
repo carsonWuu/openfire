@@ -23,7 +23,7 @@ import com.sp.message.returnMessage.returnMessage;
  */
 public class createGroup extends Factory{
 	
-	public createGroup(ReqBean req,List<GroupBean> grpList){
+	public createGroup(ReqBean req){
 		this.act = req.getAct();
 		
 		this.master = req.getMaster();
@@ -38,7 +38,7 @@ public class createGroup extends Factory{
 		
 		this.alias = req.getAlias();
 		
-		this.grpList = grpList;
+		
 		
 		this.cachedata =cacheDATA.getInstance();
 		

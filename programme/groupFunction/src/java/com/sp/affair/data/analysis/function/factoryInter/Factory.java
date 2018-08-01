@@ -30,9 +30,9 @@ public abstract class Factory {
 	
 	public void cout(){
 		
-		int size = grpList.size();
+		int size = this.cachedata.groupandmember.list.size();
 		System.out.println("现在成员群组数量："+size);
-		System.out.println(grpList.toString());	
+		System.out.println( this.cachedata.groupandmember.list.toString());	
 		
 	}
 	public static String getTime(){

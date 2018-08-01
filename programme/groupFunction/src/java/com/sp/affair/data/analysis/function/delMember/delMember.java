@@ -21,14 +21,14 @@ import com.sp.data.data.cacheDATA;
 
 
 public class delMember extends Factory{
-	public delMember(ReqBean req,List<GroupBean> grpList){
+	public delMember(ReqBean req){
 		this.act = req.getAct();
 		
 		this.grp_id = req.getGrp_id();
 		this.u_id = req.getU_id();
 		this.master = req.getMaster();
 			
-		this.grpList = grpList;
+		this.cachedata = cacheDATA.getInstance();
 		
 	}
 	@Override
@@ -56,13 +56,13 @@ public class delMember extends Factory{
 		boolean u_idExist = false;//判断需添加用户不存在
 //		List<GroupBean> groupList = this.data.groupandmember.list;//存放群组信息的集合
 		int indexU=-1;
-		for(int i = 0 ; i< grpList.size(); i++){
+		for(int i = 0 ; i< this.cachedata.groupandmember.list.size(); i++){
 //			System.out.println(groupList.get(i).getGrpId()+" ?== "+this.grp_id);
-			if(grpList.get(i).getGrpId().equals(this.grp_id)){//群号存在
+			if(this.cachedata.groupandmember.list.get(i).getGrpId().equals(this.grp_id)){//群号存在
 				
 				groupOwner = true;//群号存在
 				
-				List<UserBean> userList =grpList.get(i).getUserList();
+				List<UserBean> userList =this.cachedata.groupandmember.list.get(i).getUserList();
 				for(int j = 0 ;j< userList.size();j++){
 					if(userList.get(j).getType()==1){//群主
 					
@@ -86,9 +86,10 @@ public class delMember extends Factory{
 				if(masterExist){//master存在
 					if(u_idExist){//用户已存在可以踢人****************
 											
-						storeGroup = grpList.get(i);//将需要解散的群组信息保存，以备后面的处理
-						System.out.println(storeGroup.getUserList().size());
-						grpList.get(i).getUserList().remove(indexU);//踢出用户
+						storeGroup = this.cachedata.groupandmember.list.get(i);//将需要解散的群组信息保存，以备后面的处理
+//						System.out.println(storeGroup.getUserList().size());
+						this.cachedata.delMember(this.grp_id,this.u_id,i,indexU);
+//						this.cachedata.groupandmember.list.get(i).getUserList().remove(indexU);//踢出用户
 												
 						ret = new RecvBean(0,"踢出用户成功",this.grp_id);
 						return ret ;
