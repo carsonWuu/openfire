@@ -84,27 +84,7 @@ public class groupANDmember {
 		List<UserBean> userList = g.getUserList();
 		map.put("text_member", userList.toString());
 		System.out.println(map);
-//		int userLength= userList.size();
-//		
-//		StringBuilder text_member =new StringBuilder();
-//		
-//		for(int i = 0; i< userLength;i++){
-////			Map<String,Object> user =new HashMap();
-////			DBHelper.insert("app_groupandmember",user);
-//			
-//			String u_id = userList.get(i).getU_id();
-//			int type =  userList.get(i).getType();
-//			int state=  userList.get(i).getState();
-//			int open =  userList.get(i).getOpen();
-//			
-//			map =new HashMap();
-//			map.put("u_id", u_id);
-//			map.put("type",type);
-//			map.put("state", state);
-//			map.put("open", open);
-//			
-//			
-//		}
+
 		
 		try {
 			DBHelper.insert("app_groupandmember", map);
@@ -128,21 +108,21 @@ public class groupANDmember {
 	public static int delGroup(String ID,int index){//根据群组ID删除
 		/*
 		 * 一、数据库更新：同时更新两张表
-		 * 1.app_usergroups
-		 * 2.app_groupandmember
+		
+		 * 1.app_groupandmember
 		 * 
 		 * 二、缓存更新：群组集合中添加一个群信息。
 		 */
 		int ret = 0;
-		String sql[]=new String[2];
-		sql[0]="delete from app_usergroups where UG_ID=\""+ID+"\"";
-		sql[1]="delete from app_groupandmember where grp_id=\""+ID+"\"";
+		String sql="delete from app_groupandmember where c_group_id=?";
+		Object obj[]={ID};
 		
 		try{
-			DBHelper.updateCommit(sql);
+			DBHelper.executeUpdate(sql, obj);
+			
 			list.remove(index);
 		}
-		catch(Exception e){
+		catch(SQLException e){
 			ret = 99;
 			System.out.println("解散群组失败，原因："+e);
 		}
@@ -154,24 +134,28 @@ public class groupANDmember {
 	
 	public static int addMember(String grp_id,String u_id){
 		int ret =0;
-		String tables[]=new String[1];
-		tables[0]="app_groupandmember";
-		List<Map<String,Object>> listM=new ArrayList();
+		String tables="app_groupandmember";
+		
 		Map<String,Object> map =new HashMap();
 		map.put("grp_id", grp_id);
 		map.put("u_id", u_id);
-		listM.add(map);
-		try{
-			DBHelper.insertCommit(tables,listM);
-			
-		}
-		catch(Exception e){
+		
+		
+		try {
+			DBHelper.insert(tables,map);
+		} catch (SQLException e) {
 			ret = 99;
-			System.out.println("解散群组失败，原因："+e);
+			System.out.println("添加成员失败，原因：");
+		
+		
 		}
+			
 		finally{
 			return ret;
 		}
+		
+			
+		
 	}
 	public static int delMember(String grp_id ,String u_id,int i,int index){
 		int ret = 0;
