@@ -77,17 +77,24 @@ public class addMember extends Factory{
 					}
 					else{//可以添加用户*******************
 						
-						int ret_sql= this.cachedata.addMember(this.grp_id,this.u_id);
-//						grpList.get(i).getUserList().add(new UserBean(this.u_id,0));//添加用户
-						
+						this.cachedata.groupandmember.list.get(i).getUserList().add(new UserBean(this.u_id,0));
 						storeGroup = this.cachedata.groupandmember.list.get(i);//将需要解散的群组信息保存，以备后面的处理
 						
 						
+						
+						int ret_sql= this.cachedata.addMember(storeGroup);
+//						grpList.get(i).getUserList().add(new UserBean(this.u_id,0));//添加用户
+						
+						
+						
+						
 						if(ret_sql==0){
-							this.cachedata.groupandmember.list.get(i).getUserList().add(new UserBean(this.u_id,0));
+							
 							ret = new RecvBean(0,"添加用户进群组成功",this.grp_id);
 						}
-						else if(ret_sql==99)ret =new RecvBean(ret_sql,"数据库修改失败，请重试",this.grp_id);
+						else if(ret_sql==99){
+							ret =new RecvBean(ret_sql,"数据库修改失败，请重试",this.grp_id);
+						}
 						
 						
 						return ret ;

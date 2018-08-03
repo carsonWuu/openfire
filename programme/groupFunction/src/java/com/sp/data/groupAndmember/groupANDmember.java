@@ -88,7 +88,7 @@ public class groupANDmember {
 		
 		try {
 			DBHelper.insert("app_groupandmember", map);
-			list.add(g);
+//			list.add(g);
 //			DBHelper.insert("app_usergroups", map);
 			
 			
@@ -120,7 +120,7 @@ public class groupANDmember {
 		try{
 			DBHelper.executeUpdate(sql, obj);
 			
-			list.remove(index);
+//			list.remove(index);
 		}
 		catch(SQLException e){
 			ret = 99;
@@ -132,17 +132,17 @@ public class groupANDmember {
 		
 	}
 	
-	public static int addMember(String grp_id,String u_id){
+	public static int addMember(GroupBean groupBean){
 		int ret =0;
-		String tables="app_groupandmember";
+		String c_group_id = groupBean.getGrpId();
+		String text_member= groupBean.getUserList().toString();
+		String sql="update app_groupandmember set text_member=? where c_group_id=? ;";
 		
-		Map<String,Object> map =new HashMap();
-		map.put("grp_id", grp_id);
-		map.put("u_id", u_id);
+		Object obj[]={text_member,c_group_id};
 		
 		
 		try {
-			DBHelper.insert(tables,map);
+			DBHelper.executeUpdate(sql, obj);
 		} catch (SQLException e) {
 			ret = 99;
 			System.out.println("添加成员失败，原因：");

@@ -75,11 +75,17 @@ public class deleteGroup extends Factory{
 							this.storeGroup =  this.cachedata.groupandmember.list.get(i);//将需要解散的群组信息保存，以备后面的处理
 							
 							//解散群组 下标为i
-							int ret_sql = this.cachedata.groupandmember.delGroup(this.grp_id,i);
+							int ret_sql = this.cachedata.delGroup(this.grp_id,i);
 //							this.cachedata.groupandmember.list.remove(i);
 							
-							if(ret_sql==0)ret =  new RecvBean(0, "解散群组成功",this.grp_id);
-							else if(ret_sql==99)ret =new RecvBean(ret_sql,"数据库修改失败，请重试",this.grp_id);
+							if(ret_sql==0){
+								ret =  new RecvBean(0, "解散群组成功",this.grp_id);
+								this.cachedata.groupandmember.list.remove(ret_sql);
+							}
+							else if(ret_sql==99){
+								ret =new RecvBean(ret_sql,"数据库修改失败，请重试",this.grp_id);
+								
+							}
 							
 							return ret;
 						}

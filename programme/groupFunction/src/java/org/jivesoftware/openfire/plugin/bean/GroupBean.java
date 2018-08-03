@@ -8,7 +8,7 @@ public class GroupBean {
 	private List<UserBean> userList;
 	private String masterId;
 	private int state;//暂时不用
-	private String alias;//别名
+	private String alias;//群名称
 	
 	
 	public GroupBean(){

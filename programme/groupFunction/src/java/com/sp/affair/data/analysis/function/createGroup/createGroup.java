@@ -55,7 +55,7 @@ public class createGroup extends Factory{
 	
 	@Override
 	public RecvBean doAction(){
-		RecvBean ret ;
+		RecvBean ret = null ;
 		
 		cout();
 				
@@ -76,9 +76,15 @@ public class createGroup extends Factory{
 		storeGroup =new GroupBean(groupID,this.alias,this.u_list,this.master);
 		
 //		this.grpList.add(storeGroup);
-		this.cachedata.addGroup(storeGroup);
-		ret =  new RecvBean(0, "创建群组成功",groupID);
+		int sql_ret=this.cachedata.addGroup(storeGroup);
+		if(sql_ret==0){
+			ret =  new RecvBean(0, "创建群组成功",groupID);
+			this.cachedata.groupandmember.list.add(storeGroup);
+		}
+		if(sql_ret==99){
+			ret =new RecvBean(99,"数据库修改失败，请重试",groupID);	
 			
+		}
 		return ret;
 	}
 	public String createGroupID(){

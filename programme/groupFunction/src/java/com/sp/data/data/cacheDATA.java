@@ -20,14 +20,14 @@ public class cacheDATA {
 		}
 		return instance;
 	}
-	public static void addGroup(GroupBean g){
-		groupANDmember.addGroup(g);
+	public static int  addGroup(GroupBean g){
+		return groupANDmember.addGroup(g);
 	}
 	public static int delGroup(String grp_id,int index){
 		return groupANDmember.delGroup(grp_id,index);
 	}
-	public static int addMember(String grp_id,String u_id){
-		return groupANDmember.addMember(grp_id,u_id);
+	public static int addMember(GroupBean groupBean){
+		return groupANDmember.addMember(groupBean);
 	}
 	public static int delMember(String grp_id,String u_id,int i,int index){
 		return groupANDmember.delMember(grp_id, u_id, i, index);
