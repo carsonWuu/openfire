@@ -145,8 +145,11 @@ public class DBHelper {
 			fds = fields.keySet().iterator();
 			int index = 1;
 			Object v;
-			for (; fds.hasNext(); prep.setObject(index++, v))
+			for (; fds.hasNext(); prep.setObject(index++, v)){
 				v = fields.get(fds.next());
+				System.out.println("v:"+v);
+			}
+				
 
 			ret = prep.executeUpdate();
 		} catch (Exception e) {
@@ -189,7 +192,7 @@ public class DBHelper {
 
 				sb.append(");");
 				
-				connect.prepareStatement(sb.toString());
+				
 				prep[i_sql] = connect.prepareStatement(sb.toString());
 				fds = list.get(i_sql).keySet().iterator();
 				int index = 1;
