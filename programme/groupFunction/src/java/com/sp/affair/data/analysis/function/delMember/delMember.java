@@ -66,7 +66,7 @@ public class delMember extends Factory{
 				for(int j = 0 ;j< userList.size();j++){
 					if(userList.get(j).getType()==1){//群主
 					
-						if(userList.get(j).getU_id().equals(this.master)){//master在群组中，可以添加新用户进群组
+						if(userList.get(j).getU_id().equals(this.master)){//master在群组中，可以踢出用户进群组
 							masterExist = true;
 							
 						}
@@ -87,12 +87,30 @@ public class delMember extends Factory{
 					if(u_idExist){//用户已存在可以踢人****************
 											
 						storeGroup = this.cachedata.groupandmember.list.get(i);//将需要解散的群组信息保存，以备后面的处理
-//						System.out.println(storeGroup.getUserList().size());
-						this.cachedata.delMember(this.grp_id,this.u_id,i,indexU);
-//						this.cachedata.groupandmember.list.get(i).getUserList().remove(indexU);//踢出用户
-												
-						ret = new RecvBean(0,"踢出用户成功",this.grp_id);
+						
+						GroupBean gb = (GroupBean) storeGroup.deepClone(),sto = (GroupBean) storeGroup.deepClone();
+						storeGroup = sto; 
+						gb.getUserList().remove(indexU);
+						
+						int ret_sql= this.cachedata.delMember(gb);
+						
+						
+						if(ret_sql==0){
+							
+							this.cachedata.groupandmember.list.get(i).getUserList().remove(indexU);//踢出用户
+							ret = new RecvBean(0,"踢出用户成功",this.grp_id);
+							
+						}
+						else if(ret_sql==99){
+							ret =new RecvBean(ret_sql,"数据库修改失败，请重试",this.grp_id);
+						}
+						
+						
 						return ret ;
+//						
+												
+						
+					
 					}
 					else{//操作者不是群主
 						

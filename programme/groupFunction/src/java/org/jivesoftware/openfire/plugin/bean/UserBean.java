@@ -1,6 +1,8 @@
 package org.jivesoftware.openfire.plugin.bean;
 
-public class UserBean {
+import java.io.Serializable;
+
+public class UserBean implements Serializable{
 	private String u_id;
 	private String name;//名称
 	private String nickname;//群昵称
@@ -10,6 +12,7 @@ public class UserBean {
 	private int state;
 	
 	private int open;
+	private static final long serialVersionUID = 1L;
 	public static void main(String args[]){
 		Object obj[]=new Object[10];
 		UserBean userBean = new UserBean(obj);

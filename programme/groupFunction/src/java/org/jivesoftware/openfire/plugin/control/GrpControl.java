@@ -60,7 +60,7 @@ public class GrpControl {
 		else if(act ==3){//退出群组
 			addORdel = new quitGroup(reqBean);
 			ret = addORdel.doAction();
-			addORdel.doAction();
+			addORdel.cout();
 		}
 		else{
 			ret = new RecvBean(5, "Act错误");
@@ -203,12 +203,10 @@ public class GrpControl {
 			respBean.setMaster(reqBean.getMaster());
 			for (UserBean userBean : grpBean.getUserList()) {
 				if (!reqBean.getMaster().equals(userBean.getU_id())) {
-					pushServer.pushDetail(userBean.getU_id(), ret_subject, GsonUtil.gson.toJson(respBean));
+					pushServer.push(userBean.getU_id(), ret_subject , GsonUtil.gson.toJson(respBean));
 				}
 			}
-			if (!reqBean.getMaster().equals(grpBean.getMasterId())) {
-				pushServer.pushDetail(grpBean.getMasterId(), ret_subject , GsonUtil.gson.toJson(respBean));
-			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("push error");

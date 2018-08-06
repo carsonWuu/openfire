@@ -1,16 +1,18 @@
 package org.jivesoftware.openfire.plugin.bean;
 
 import java.util.List;
+import java.io.*;
 
 
-public class GroupBean {
+
+public class GroupBean implements Serializable{
 	private String grpId;
 	private List<UserBean> userList;
 	private String masterId;
 	private int state;//暂时不用
 	private String alias;//群名称
 	
-	
+	private static final long serialVersionUID = 1L;
 	public GroupBean(){
 		
 	}
@@ -55,6 +57,26 @@ public class GroupBean {
 	public String getAlias(){
 		return this.alias;
 	}
+	 public Object deepClone() {
+		 // 将对象写到流里
+		 Object ret =null;
+		 try{
+			 ByteArrayOutputStream bo = new ByteArrayOutputStream();
+			 ObjectOutputStream oo = new ObjectOutputStream(bo);
+			 oo.writeObject(this);
+			 // 从流里读出来
+			 ByteArrayInputStream bi = new ByteArrayInputStream(bo.toByteArray());
+			 ObjectInputStream oi = new ObjectInputStream(bi);
+			 ret=oi.readObject();
+		 }
+		 catch(IOException e){
+			 e.printStackTrace();
+		 }
+		 catch(ClassNotFoundException e){
+			 e.printStackTrace();
+		 }
+		 return ret;
+	 }
 	@Override
 	public String toString(){
 		return "{grpID: "+this.grpId+" , "+"alias: "+this.alias+" , "+" userList: "+this.userList+" }";

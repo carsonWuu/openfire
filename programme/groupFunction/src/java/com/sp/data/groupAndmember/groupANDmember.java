@@ -157,18 +157,22 @@ public class groupANDmember {
 			
 		
 	}
-	public static int delMember(String grp_id ,String u_id,int i,int index){
-		int ret = 0;
-		String sql[]=new String[1];
-		sql[0]="delete from app_groupandmember where grp_id= \""+grp_id+"\" && u_id =\""+u_id+"\"";
-		try{
-			DBHelper.updateCommit(sql);
-			list.get(i).getUserList().remove(index);
+	public static int delMember(GroupBean groupBean){
+		int ret =0;
+		String c_group_id = groupBean.getGrpId();
+		String text_member= groupBean.getUserList().toString();
+		String sql="update app_groupandmember set text_member=? where c_group_id=? ;";
+		
+		Object obj[]={text_member,c_group_id};
+		
+		
+		try {
+			DBHelper.executeUpdate(sql, obj);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.out.println("创建群组失败，原因："+e);
-			ret= 99;
-			
+			ret = 99;
+			System.out.println("踢出成员失败，原因：");
+		
+		
 		}
 		finally{
 			return ret;

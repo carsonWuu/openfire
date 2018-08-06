@@ -152,14 +152,14 @@ public class GroupPlugin implements PacketInterceptor, Plugin,
 					System.out.println(logTime+"\tclient-->server:"+message.toXML());
 					String express = message.getBody();//Codec.decode(msg.getBody());
 					
-					System.out.println(express);
+//					System.out.println(express);
 					ReqBean reqBean = null;
 					
 					try {
 						reqBean = GsonUtil.gson.fromJson(express, ReqBean.class);
 						reqBean.setMsgLinkId(message.getID());
 //						reqBean.setFrom(message.getFrom().getNode());
-						System.out.println("getFrom::"+reqBean.getFrom());
+//						System.out.println("getFrom::"+reqBean.getFrom());
 					} catch (JsonSyntaxException e1) {
 						System.out.println("parse error");
 						e1.printStackTrace();

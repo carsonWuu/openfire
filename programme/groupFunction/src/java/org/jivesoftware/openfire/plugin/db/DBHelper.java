@@ -147,10 +147,8 @@ public class DBHelper {
 			Object v;
 			for (; fds.hasNext(); prep.setObject(index++, v)){
 				v = fields.get(fds.next());
-				System.out.println("v:"+v);
 			}
 				
-
 			ret = prep.executeUpdate();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

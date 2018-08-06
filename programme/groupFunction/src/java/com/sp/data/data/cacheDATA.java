@@ -29,7 +29,7 @@ public class cacheDATA {
 	public static int addMember(GroupBean groupBean){
 		return groupANDmember.addMember(groupBean);
 	}
-	public static int delMember(String grp_id,String u_id,int i,int index){
-		return groupANDmember.delMember(grp_id, u_id, i, index);
+	public static int delMember(GroupBean groupBean){
+		return groupANDmember.delMember(groupBean);
 	}
 }

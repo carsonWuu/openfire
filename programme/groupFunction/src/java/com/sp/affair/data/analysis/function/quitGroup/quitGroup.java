@@ -75,12 +75,26 @@ public class quitGroup extends Factory{
 					}
 					
 					if(userList.get(j).getU_id().equals(this.master)){//需退出的成员存在
+						
 						storeGroup = this.cachedata.groupandmember.list.get(i);//将需要解散的群组信息保存，以备后面的处理
 						
-						int ret_sql= this.cachedata.delMember(this.grp_id, this.master, i, j);
-						if(ret_sql==0)ret =  new RecvBean(0, "退出群组成功",this.grp_id);
-						else if(ret_sql==99)ret = new RecvBean(99,"数据库修改失败，请重试",this.grp_id);
-						return ret;
+						GroupBean gb = (GroupBean) storeGroup.deepClone();
+						gb.getUserList().remove(j);
+						
+						int ret_sql= this.cachedata.delMember(gb);
+//						grpList.get(i).getUserList().add(new UserBean(this.u_id,0));//添加用户		
+						
+						if(ret_sql==0){
+							
+							this.cachedata.groupandmember.list.get(i).getUserList().remove(j);//踢出用户
+							ret = new RecvBean(0,"退出群组成功",this.grp_id);
+						}
+						else if(ret_sql==99){
+							ret =new RecvBean(ret_sql,"数据库修改失败，请重试",this.grp_id);
+						}
+						
+						System.out.println(storeGroup);
+						return ret ;
 					}
 					
 				}
